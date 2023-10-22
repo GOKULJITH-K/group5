@@ -9,7 +9,7 @@
 .header{
     min-height: 100vh;
     width: 100%;
-    background-image:url(desktop.jpg);
+    background-image:linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(uni.jpg);
     background-position:center;
     background-size:cover;
     position:relative;
@@ -27,7 +27,7 @@
 }
 .text-box{
     width:90%;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -42,14 +42,14 @@
 .text-box p{
     margin: 10px 0 40px;
     font-size: 14px;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
 }
 
 .hero-btn{
     display: inline-block;
     text-decoration: none;
-    color: rgb(0, 0, 0);
-    border: 1px solid rgb(9, 6, 12);
+    color: rgb(255, 255, 255);
+    border: 1px solid rgb(255, 255, 255);
     padding: 14px 34px;
     font-size: 13px;
     border-radius: 10px;
@@ -70,17 +70,20 @@
 @media(max-width:767px){
 
     .header{
-        background-image:url(smartphone.jpg);
+        background-image:linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(uni.jpg);
     }
     
     .text-box h1{
         font-size: 20px;
     }
     .text-box p{
-        color: black;
+        color: rgb(255, 255, 255);
     }
     .text-box a{
-        color: black;
+        color: rgb(255, 255, 255);
+    }
+    .header .hero-btn{
+        color: white;
     }
         
 
