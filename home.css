@@ -38,6 +38,7 @@
 .text-box h1{
     font-size: 62px;
     background: transparent;
+    color: white;
 }
 .text-box p{
     margin: 10px 0 40px;
