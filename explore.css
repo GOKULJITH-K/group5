@@ -104,10 +104,19 @@ h3{
     font-weight: 600;
     margin: 10px 0;
 }
+.video{
+  max-width: 100%;
+  padding: 10px;
+  height: 500px;
+}
 @media(max-width:767px){
     .row{
         width: 100%;
         
+    }
+    .video{
+      height: auto;
+      padding: 0;
     }
 }
 
