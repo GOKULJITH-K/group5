@@ -1,6 +1,7 @@
 
 nav{
   background-color: white;
+  box-shadow: 0 0 5px 0px rgb(4, 54, 74);
   overflow: hidden;
   top: 0; 
   position: sticky;
