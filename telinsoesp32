@@ -1,0 +1,102 @@
+#include <HTTPClient.h>
+#include <WiFi.h>
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
+const char* ssid = "Realme";
+const char* pass = "123456789";
+const char* serverUrl = "https://telinsoapi.onrender.com/telinso";
+
+RF24 radio(4, 5);
+const uint64_t address = 0xF0F0F0F0E1LL;
+
+struct MyVariable {
+  byte nitrogen;
+  byte phosphorous;
+  byte potassium;
+  byte Temperature;
+  byte ph;
+};
+MyVariable variable;
+
+void setup() {
+  Serial.begin(9600);
+  radio.begin();
+  radio.openReadingPipe(0, address);
+  radio.setPALevel(RF24_PA_MIN);
+  radio.startListening();
+  Serial.println("Receiver Started....");
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  Serial.println();
+  WiFi.begin(ssid, pass);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+}
+
+void loop() {
+  delay(1000);
+  
+    WiFiClient client;
+    HTTPClient http;
+
+    // Begin connection with your REST server
+    http.begin(serverUrl);
+    // Set content type to JSON
+    http.addHeader("Content-Type", "application/json");
+
+    // Write JSON of sensor readings
+    String jsonPayload = 
+  "{\"nitrogen\":\"" + String(variable.nitrogen) + "\"" +
+  ",\"phosphorous\":\"" + String(variable.phosphorous) + "\"" +
+  ",\"potassium\":\"" + String(variable.potassium) + "\"" +
+  ",\"temperature\":\"" + String(variable.Temperature) + "\"" +
+  ",\"ph\":\"" + String(variable.ph) + "\"}";
+  
+
+    // HTTP Post to fastapi server
+    Serial.println(serverUrl);
+    Serial.println(jsonPayload);
+    Serial.println(variable.nitrogen);
+    int httpCode = http.GET(); //Send the request
+ 
+      if (httpCode > 0) { //Check the returning code
+        String payload = http.getString();   //Get the request response payload
+        Serial.println("payload: " + payload);                     //Print the response payload 
+      } else {
+        Serial.println("No response");
+      }
+    int httpResponseCode = http.POST(jsonPayload);
+
+  
+
+    if (httpResponseCode > 0) {
+      String response = http.getString(); // Get the response to the request
+      Serial.println("Sensor data sent successfully");
+      Serial.println(httpResponseCode); // Print return code
+      Serial.println(response);         // Print request answer
+    } else {
+      Serial.print("Error on sending POST: ");
+      Serial.println(httpResponseCode);
+      String response = http.getString();
+      Serial.println(response);
+    }
+
+    http.end();
+    delay(1000);
+  
+  
+}
+
+int recvData() {
+  if (radio.available()) {
+    radio.read(&variable, sizeof(MyVariable));
+    return 1;
+  }
+  return 0;
+}
